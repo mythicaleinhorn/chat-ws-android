@@ -190,7 +190,7 @@ class ChatWsClient(
      * The server detects the MIME type, saves the file, and broadcasts a message
      * with type "image" or "file" containing the download URL.
      *
-     * @param data Raw bytes of the file to upload (max 5 MiB).
+     * @param data Raw bytes of the file to upload (max 10 MiB).
      * @return `true` if the frame was sent, `false` when no active connection is available or sending failed.
      */
     suspend fun sendBinary(data: ByteArray): Boolean {

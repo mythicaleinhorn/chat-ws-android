@@ -190,7 +190,7 @@ client.sendMessage(
 Files are sent as raw WebSocket binary frames. The server auto-detects the MIME type, saves the file, and broadcasts a message with the download URL to all participants.
 
 ```kotlin
-// Send an image or file (max 5 MiB)
+// Send an image or file (max 10 MiB)
 client.sendBinary(imageBytes)
 ```
 
