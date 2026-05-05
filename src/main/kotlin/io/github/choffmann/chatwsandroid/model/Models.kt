@@ -16,14 +16,16 @@ import kotlin.time.Instant
 
 /**
  * Representation of a chat participant.
- *
- * @property id Stable identifier provided by the backend.
- * @property name Display name that should be shown in clients.
+ * Optional fields ([firstName], [lastName], [additionalInfo]) are populated
+ * when the user was created via the server's REST API (POST /users).
  */
 @Serializable
 data class User(
     val id: String,
     val name: String,
+    val firstName: String? = null,
+    val lastName: String? = null,
+    val additionalInfo: JsonObject? = null,
 )
 
 /**
