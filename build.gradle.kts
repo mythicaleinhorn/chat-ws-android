@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "io.github.choffmann"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.0"
 
 val libraryArtifactId = "chat-ws-android"
 val projectUrl = "https://github.com/choffmann/chat-ws-android"
@@ -30,7 +30,7 @@ android {
 }
 
 mavenPublishing {
-  coordinates("io.github.choffmann", "chat-ws-android", "1.0.0-SNAPSHOT")
+  coordinates("io.github.choffmann", "chat-ws-android", "1.0.0")
 
   pom {
     name.set(libraryArtifactId)
