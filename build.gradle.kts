@@ -58,7 +58,7 @@ mavenPublishing {
   }
 }
 
-val ktor = "3.4.1"
+val ktor = "3.4.3"
 dependencies {
     api("io.ktor:ktor-client-core:$ktor")
     api("io.ktor:ktor-client-okhttp:$ktor")
@@ -69,6 +69,6 @@ dependencies {
 
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
 
-    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
+    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
     api("org.jetbrains.kotlinx:kotlinx-datetime:0.7.1")
 }
