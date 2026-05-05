@@ -20,7 +20,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.booleanOrNull
-import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonPrimitive
 import kotlin.time.Duration.Companion.seconds
 
@@ -31,7 +31,7 @@ import kotlin.time.Duration.Companion.seconds
  * @property enableLogging When `true`, enables Ktor's verbose logging for easier debugging.
  */
 data class ChatWsConfig(
-    val baseWsUrl: String = "wss://chat.homebin.dev",
+    val baseWsUrl: String = "wss://chat.homebin.dev/api/v1",
     val enableLogging: Boolean = true
 )
 
@@ -125,7 +125,7 @@ class ChatWsClient(
     private fun buildWsUrl(roomID: Int, userName: String?, userId: String?): String = buildString {
         append("${config.baseWsUrl}/join/$roomID")
         val params = mutableListOf<String>()
-        if (!userName.isNullOrEmpty()) params.add("user=$userName")
+        if (!userName.isNullOrEmpty()) params.add("userName=$userName")
         if (!userId.isNullOrEmpty()) params.add("userId=$userId")
         params.add("userInfo=true")
         append("?${params.joinToString("&")}")
@@ -141,11 +141,11 @@ class ChatWsClient(
                             .onSuccess { message ->
                                 val info = message.additionalInfo
                                 val isSelf = info?.get("self")?.jsonPrimitive?.booleanOrNull == true
-                                val joinedUserId = info?.get("joinedUserId")?.jsonPrimitive?.contentOrNull
-                                val joinedUserName = info?.get("joinedUserName")?.jsonPrimitive?.contentOrNull
 
-                                if (isSelf && joinedUserId != null && joinedUserName != null) {
-                                    _currentUser.emit(User(id = joinedUserId, name = joinedUserName))
+                                if (isSelf) {
+                                    info["joinedUser"]
+                                        ?.let { runCatching { AppJson.decodeFromJsonElement<User>(it) }.getOrNull() }
+                                        ?.let { _currentUser.emit(it) }
                                 } else {
                                     _incomingMessages.tryEmit(message)
                                 }
